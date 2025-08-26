@@ -267,6 +267,58 @@
             box-shadow: 0 0 15px rgba(139, 92, 246, 0.25), 0 0 30px rgba(139, 92, 246, 0.12);
         }
 
+        /* Hamburger Menu Animation */
+        .hamburger-active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .light-mode .hamburger-line {
+            background-color: #374151 !important;
+        }
+
+        /* Mobile Menu Animation */
+        .mobile-menu-enter {
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .mobile-menu-exit {
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 300px;
+            }
+        }
+
+        @keyframes slideUpMenu {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 300px;
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+                max-height: 0;
+            }
+        }
+
         /* Responsivo para mobile */
         @media (max-width: 640px) {
             .theme-toggle {
@@ -304,36 +356,67 @@
                     <p class="text-lg xl:text-xl text-gray-300 font-medium">Controle de Despesas e Receitas</p>
                 </div>
                 
-                <!-- Botões à Direita -->
-                <div class="flex gap-2">
+                <!-- Botões Desktop (lg+) -->
+                <div class="hidden lg:flex gap-2">
                     <!-- Botão Exportar Excel -->
-                    <button id="exportExcelBtn" class="bg-green-600 hover:bg-green-700 shine-effect px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg font-semibold text-sm sm:text-base lg:text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25" title="Exportar para Excel">
-                        <span class="hidden sm:inline">📊 Excel</span>
-                        <span class="sm:hidden">📊</span>
+                    <button id="exportExcelBtn" class="bg-green-600 hover:bg-green-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25" title="Exportar para Excel">
+                        📊 Excel
                     </button>
                     
                     <!-- Botão Exportar JSON -->
-                    <button id="exportJsonBtn" class="bg-blue-600 hover:bg-blue-700 shine-effect px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg font-semibold text-sm sm:text-base lg:text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25" title="Exportar para JSON">
-                        <span class="hidden sm:inline">📄 JSON</span>
-                        <span class="sm:hidden">📄</span>
+                    <button id="exportJsonBtn" class="bg-blue-600 hover:bg-blue-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25" title="Exportar para JSON">
+                        📄 JSON
                     </button>
                     
                     <!-- Botão Backup Supabase -->
-                    <button id="backupBtn" class="bg-purple-600 hover:bg-purple-700 shine-effect px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg font-semibold text-sm sm:text-base lg:text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25" title="Backup Supabase">
-                        <span class="hidden sm:inline">☁️ Backup</span>
-                        <span class="sm:hidden">☁️</span>
+                    <button id="backupBtn" class="bg-purple-600 hover:bg-purple-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25" title="Backup Supabase">
+                        ☁️ Backup
                     </button>
                     
-                    <button id="addTransactionBtn" class="btn-primary shine-effect px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg font-semibold text-sm sm:text-base lg:text-lg">
-                        <span class="hidden sm:inline">+ Nova Transação</span>
-                        <span class="sm:hidden">+ Nova</span>
+                    <button id="addTransactionBtn" class="btn-primary shine-effect px-6 py-3 rounded-lg font-semibold text-lg">
+                        + Nova Transação
+                    </button>
+                </div>
+
+                <!-- Botões Mobile/Tablet (até lg) -->
+                <div class="flex lg:hidden items-center gap-2">
+                    <!-- Botão Nova Transação sempre visível -->
+                    <button id="addTransactionBtnMobile" class="btn-primary shine-effect px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg font-semibold text-sm sm:text-base">
+                        <span class="hidden sm:inline">+ Nova</span>
+                        <span class="sm:hidden">+</span>
+                    </button>
+                    
+                    <!-- Botão Menu Hamburger -->
+                    <button id="mobileMenuBtn" class="glass-effect p-2 sm:p-2.5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25" title="Menu">
+                        <div class="w-5 h-5 sm:w-6 sm:h-6 flex flex-col justify-center items-center">
+                            <span class="hamburger-line block w-full h-0.5 bg-white mb-1 transition-all duration-300"></span>
+                            <span class="hamburger-line block w-full h-0.5 bg-white mb-1 transition-all duration-300"></span>
+                            <span class="hamburger-line block w-full h-0.5 bg-white transition-all duration-300"></span>
+                        </div>
                     </button>
                 </div>
             </div>
             
             <!-- Subtítulo para telas menores -->
             <div class="lg:hidden mt-2 sm:mt-3 text-center">
-                <p class="text-sm sm:text-base lg:text-lg text-gray-300">Controle de Despesas e Receitas</p>
+                <p class="text-sm sm:text-base text-gray-300">Controle de Despesas e Receitas</p>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobileMenu" class="lg:hidden hidden mt-4 glass-effect rounded-xl p-4 mx-3 sm:mx-4 border border-gray-600">
+            <div class="grid grid-cols-1 gap-3">
+                <button id="exportExcelBtnMobile" class="bg-green-600 hover:bg-green-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 flex items-center justify-center gap-2">
+                    📊 <span>Exportar Excel</span>
+                </button>
+                
+                <button id="exportJsonBtnMobile" class="bg-blue-600 hover:bg-blue-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2">
+                    📄 <span>Exportar JSON</span>
+                </button>
+                
+                <button id="backupBtnMobile" class="bg-purple-600 hover:bg-purple-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center justify-center gap-2">
+                    ☁️ <span>Backup Supabase</span>
+                </button>
             </div>
         </div>
     </header>
@@ -655,8 +738,11 @@
 
 
             setupEventListeners() {
-                // Transaction events
-                document.getElementById('addTransactionBtn').addEventListener('click', () => this.openModal());
+                // Transaction events - Desktop
+                document.getElementById('addTransactionBtn')?.addEventListener('click', () => this.openModal());
+                // Transaction events - Mobile
+                document.getElementById('addTransactionBtnMobile')?.addEventListener('click', () => this.openModal());
+                
                 document.getElementById('cancelBtn').addEventListener('click', () => this.closeModal());
                 document.getElementById('transactionForm').addEventListener('submit', (e) => this.handleSubmit(e));
                 document.getElementById('type').addEventListener('change', () => this.updateCategoryOptions());
@@ -686,18 +772,37 @@
                     this.updateCharts();
                 });
                 
-                // Export events
-                document.getElementById('exportExcelBtn').addEventListener('click', () => this.exportToExcel());
-                document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportToJson());
+                // Export events - Desktop
+                document.getElementById('exportExcelBtn')?.addEventListener('click', () => this.exportToExcel());
+                document.getElementById('exportJsonBtn')?.addEventListener('click', () => this.exportToJson());
                 
-                // Backup events
-                document.getElementById('backupBtn').addEventListener('click', () => this.openBackupModal());
+                // Export events - Mobile
+                document.getElementById('exportExcelBtnMobile')?.addEventListener('click', () => {
+                    this.exportToExcel();
+                    this.closeMobileMenu();
+                });
+                document.getElementById('exportJsonBtnMobile')?.addEventListener('click', () => {
+                    this.exportToJson();
+                    this.closeMobileMenu();
+                });
+                
+                // Backup events - Desktop
+                document.getElementById('backupBtn')?.addEventListener('click', () => this.openBackupModal());
+                // Backup events - Mobile
+                document.getElementById('backupBtnMobile')?.addEventListener('click', () => {
+                    this.openBackupModal();
+                    this.closeMobileMenu();
+                });
+                
                 document.getElementById('cancelBackupBtn').addEventListener('click', () => this.closeBackupModal());
                 document.getElementById('saveConfigBtn').addEventListener('click', () => this.saveSupabaseConfig());
                 document.getElementById('testConnectionBtn').addEventListener('click', () => this.testSupabaseConnection());
                 document.getElementById('uploadBackupBtn').addEventListener('click', () => this.uploadToSupabase());
                 document.getElementById('downloadBackupBtn').addEventListener('click', () => this.downloadFromSupabase());
                 document.getElementById('createTableBtn').addEventListener('click', () => this.showCreateTableSQL());
+                
+                // Mobile menu events
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => this.toggleMobileMenu());
                 
                 // Theme toggle event
                 document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
@@ -710,6 +815,15 @@
                     if (e.target.id === 'backupModal') this.closeBackupModal();
                 });
                 
+                // Fechar menu mobile ao clicar fora
+                document.addEventListener('click', (e) => {
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                    
+                    if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        this.closeMobileMenu();
+                    }
+                });
 
             }
 
@@ -2123,6 +2237,48 @@ ORDER BY ordinal_position;`;
                     notification.remove();
                 }, 3000);
             }
+
+            // ===== MÉTODOS DO MENU MOBILE =====
+            
+            toggleMobileMenu() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                
+                if (mobileMenu.classList.contains('hidden')) {
+                    this.openMobileMenu();
+                } else {
+                    this.closeMobileMenu();
+                }
+            }
+
+            openMobileMenu() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('mobile-menu-enter');
+                mobileMenuBtn.classList.add('hamburger-active');
+                
+                // Remover classe de animação após completar
+                setTimeout(() => {
+                    mobileMenu.classList.remove('mobile-menu-enter');
+                }, 300);
+            }
+
+            closeMobileMenu() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('mobile-menu-exit');
+                    mobileMenuBtn.classList.remove('hamburger-active');
+                    
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('mobile-menu-exit');
+                    }, 300);
+                }
+            }
         }
 
         // Inicializar a aplicação
@@ -2130,5 +2286,5 @@ ORDER BY ordinal_position;`;
     </script>
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97504335f442ae84',t:'MTc1NjE3OTE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'975051be4033f23f',t:'MTc1NjE3OTc0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
