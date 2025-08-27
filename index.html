@@ -6,6 +6,7 @@
     <title>FinanceControl - Controle de Finanças Pessoais</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-dark: #18191B;
@@ -15,7 +16,7 @@
 
         body {
             background: linear-gradient(135deg, var(--primary-dark) 0%, #2a2b2f 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .glass-effect {
@@ -83,11 +84,13 @@
 
         .card-hover {
             transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
         .card-hover:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2), 0 0 30px rgba(139, 92, 246, 0.1);
+            transform: scale(1.02);
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
         }
 
         /* Modo Claro */
@@ -104,8 +107,9 @@
         }
 
         .light-mode .card-hover:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.15), 0 0 30px rgba(139, 92, 246, 0.08);
+            transform: scale(1.02);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
         .light-mode .btn-primary:hover {
@@ -234,37 +238,33 @@
             color: #ffffff !important;
         }
 
-        /* Botão de alternância de tema */
-        .theme-toggle {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 1000;
+        /* Toggle de tema no header */
+        .theme-toggle-active .theme-slider {
+            transform: translateX(32px);
             background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
-            border: none;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white;
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.15);
+        .theme-toggle-active-mobile .theme-slider-mobile {
+            transform: translateX(24px);
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
+            color: white;
         }
 
-        .light-mode .theme-toggle {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .light-mode .theme-toggle-active .theme-slider {
+            background: #f59e0b !important;
         }
 
-        .light-mode .theme-toggle:hover {
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.25), 0 0 30px rgba(139, 92, 246, 0.12);
+        .light-mode .theme-toggle-active-mobile .theme-slider-mobile {
+            background: #f59e0b !important;
+        }
+
+        .light-mode #themeToggle {
+            background-color: #e5e7eb !important;
+        }
+
+        .light-mode #themeToggleMobile {
+            background-color: #e5e7eb !important;
         }
 
         /* Hamburger Menu Animation */
@@ -334,17 +334,12 @@
     </style>
 </head>
 <body class="min-h-screen text-white">
-    <!-- Botão de Alternância de Tema -->
-    <button id="themeToggle" class="theme-toggle" title="Alternar tema">
-        🌙
-    </button>
     <!-- Main Header - FinanceControl -->
     <header class="glass-effect p-3 sm:p-4 lg:p-6 fade-in border-b border-gray-600">
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between">
                 <!-- Logo e Título à Esquerda -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <div class="text-2xl sm:text-3xl lg:text-4xl">💰</div>
                     <h1 class="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#0C757B] to-[#470E92] bg-clip-text text-transparent">
                         <span class="hidden sm:inline">FinanceControl</span>
                         <span class="sm:hidden">Finance</span>
@@ -357,20 +352,28 @@
                 </div>
                 
                 <!-- Botões Desktop (lg+) -->
-                <div class="hidden lg:flex gap-2">
+                <div class="hidden lg:flex items-center gap-2">
+                    <!-- Toggle de Tema -->
+                    <div class="relative mr-3">
+                        <button id="themeToggle" class="relative w-16 h-8 bg-gray-600 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 focus:outline-none" title="Alternar tema">
+                            <div id="themeSlider" class="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300 flex items-center justify-center text-sm">
+                            </div>
+                        </button>
+                    </div>
+                    
                     <!-- Botão Exportar Excel -->
                     <button id="exportExcelBtn" class="bg-green-600 hover:bg-green-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25" title="Exportar para Excel">
-                        📊 Excel
+                        Excel
                     </button>
                     
                     <!-- Botão Exportar JSON -->
                     <button id="exportJsonBtn" class="bg-blue-600 hover:bg-blue-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25" title="Exportar para JSON">
-                        📄 JSON
+                        JSON
                     </button>
                     
                     <!-- Botão Backup Supabase -->
                     <button id="backupBtn" class="bg-purple-600 hover:bg-purple-700 shine-effect px-6 py-3 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25" title="Backup Supabase">
-                        ☁️ Backup
+                        Backup
                     </button>
                     
                     <button id="addTransactionBtn" class="btn-primary shine-effect px-6 py-3 rounded-lg font-semibold text-lg">
@@ -380,6 +383,14 @@
 
                 <!-- Botões Mobile/Tablet (até lg) -->
                 <div class="flex lg:hidden items-center gap-2">
+                    <!-- Toggle de Tema Mobile -->
+                    <div class="relative">
+                        <button id="themeToggleMobile" class="relative w-12 h-6 sm:w-14 sm:h-7 bg-gray-600 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 focus:outline-none" title="Alternar tema">
+                            <div id="themeSliderMobile" class="absolute top-0.5 left-0.5 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full shadow-md transition-all duration-300 flex items-center justify-center text-xs sm:text-sm">
+                            </div>
+                        </button>
+                    </div>
+                    
                     <!-- Botão Nova Transação sempre visível -->
                     <button id="addTransactionBtnMobile" class="btn-primary shine-effect px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg font-semibold text-sm sm:text-base">
                         <span class="hidden sm:inline">+ Nova</span>
@@ -407,15 +418,15 @@
         <div id="mobileMenu" class="lg:hidden hidden mt-4 glass-effect rounded-xl p-4 mx-3 sm:mx-4 border border-gray-600">
             <div class="grid grid-cols-1 gap-3">
                 <button id="exportExcelBtnMobile" class="bg-green-600 hover:bg-green-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 flex items-center justify-center gap-2">
-                    📊 <span>Exportar Excel</span>
+                    <span>Exportar Excel</span>
                 </button>
                 
                 <button id="exportJsonBtnMobile" class="bg-blue-600 hover:bg-blue-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2">
-                    📄 <span>Exportar JSON</span>
+                    <span>Exportar JSON</span>
                 </button>
                 
                 <button id="backupBtnMobile" class="bg-purple-600 hover:bg-purple-700 shine-effect px-4 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 flex items-center justify-center gap-2">
-                    ☁️ <span>Backup Supabase</span>
+                    <span>Backup Supabase</span>
                 </button>
             </div>
         </div>
@@ -433,7 +444,6 @@
                         <p class="text-gray-300 text-xs sm:text-sm">Saldo Total</p>
                         <p id="totalBalance" class="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0C757B] truncate">R$ 0,00</p>
                     </div>
-                    <div class="text-2xl sm:text-3xl lg:text-4xl ml-2">💳</div>
                 </div>
             </div>
 
@@ -444,7 +454,6 @@
                         <p class="text-gray-300 text-xs sm:text-sm">Receitas</p>
                         <p id="totalIncome" class="text-xl sm:text-2xl lg:text-3xl font-bold text-green-400 truncate">R$ 0,00</p>
                     </div>
-                    <div class="text-2xl sm:text-3xl lg:text-4xl ml-2">📈</div>
                 </div>
             </div>
 
@@ -455,7 +464,6 @@
                         <p class="text-gray-300 text-xs sm:text-sm">Despesas</p>
                         <p id="totalExpenses" class="text-xl sm:text-2xl lg:text-3xl font-bold text-red-400 truncate">R$ 0,00</p>
                     </div>
-                    <div class="text-2xl sm:text-3xl lg:text-4xl ml-2">📉</div>
                 </div>
             </div>
         </div>
@@ -563,7 +571,6 @@
             </div>
             <div id="transactionsList" class="divide-y divide-gray-600">
                 <div class="p-6 sm:p-8 text-center text-gray-400">
-                    <div class="text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">📊</div>
                     <p class="text-sm sm:text-base">Nenhuma transação encontrada</p>
                     <p class="text-xs sm:text-sm mt-1">Adicione sua primeira transação para começar</p>
                 </div>
@@ -574,7 +581,7 @@
     <!-- Modal de Backup Supabase -->
     <div id="backupModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="glass-effect p-4 sm:p-6 lg:p-8 rounded-2xl w-full max-w-sm sm:max-w-md slide-up">
-            <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">☁️ Backup Supabase</h3>
+            <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Backup Supabase</h3>
             
             <div class="space-y-4">
                 <!-- Status da Configuração -->
@@ -610,19 +617,19 @@
                 <div class="border-t border-gray-600 pt-4 space-y-3">
                     <div class="grid grid-cols-2 gap-2">
                         <button id="testConnectionBtn" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
-                            🔍 Testar
+                            Testar
                         </button>
                         <button id="saveConfigBtn" class="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
-                            💾 Salvar Config
+                            Salvar Config
                         </button>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-2">
                         <button id="uploadBackupBtn" class="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
-                            ⬆️ Enviar Backup
+                            Enviar Backup
                         </button>
                         <button id="downloadBackupBtn" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
-                            ⬇️ Baixar Backup
+                            Baixar Backup
                         </button>
                     </div>
                 </div>
@@ -642,7 +649,7 @@
                         Fechar
                     </button>
                     <button id="createTableBtn" class="flex-1 bg-[#0C757B] hover:bg-[#470E92] px-3 py-2 sm:px-4 sm:py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 text-sm sm:text-base">
-                        📋 SQL da Tabela
+                        SQL da Tabela
                     </button>
                 </div>
             </div>
@@ -804,8 +811,9 @@
                 // Mobile menu events
                 document.getElementById('mobileMenuBtn').addEventListener('click', () => this.toggleMobileMenu());
                 
-                // Theme toggle event
-                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+                // Theme toggle events
+                document.getElementById('themeToggle')?.addEventListener('click', () => this.toggleTheme());
+                document.getElementById('themeToggleMobile')?.addEventListener('click', () => this.toggleTheme());
                 
                 // Fechar modal clicando fora
                 document.getElementById('transactionModal').addEventListener('click', (e) => {
@@ -929,7 +937,6 @@
                 if (filteredTransactions.length === 0) {
                     container.innerHTML = `
                         <div class="p-8 text-center text-gray-400">
-                            <div class="text-6xl mb-4">📊</div>
                             <p>Nenhuma transação encontrada</p>
                             <p class="text-sm">Adicione sua primeira transação para começar</p>
                         </div>
@@ -938,13 +945,10 @@
                 }
 
                 container.innerHTML = filteredTransactions.map(transaction => `
-                    <div class="p-3 sm:p-4 hover:bg-white hover:bg-opacity-5 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/15">
+                    <div class="p-3 sm:p-4 hover:bg-white hover:bg-opacity-5 transition-all duration-300 hover:scale-101 hover:shadow-lg hover:shadow-purple-500/15">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 sm:gap-3">
-                                    <div class="text-xl sm:text-2xl flex-shrink-0">
-                                        ${transaction.type === 'receita' ? '💰' : '💸'}
-                                    </div>
                                     <div class="min-w-0 flex-1">
                                         <h4 class="font-semibold text-sm sm:text-base truncate">${transaction.description}</h4>
                                         <p class="text-xs sm:text-sm text-gray-400 truncate">
@@ -961,18 +965,18 @@
                                 </span>
                                 <div class="flex gap-1 sm:gap-2">
                                     <button onclick="financeController.openModal(${JSON.stringify(transaction).replace(/"/g, '&quot;')})" 
-                                            class="text-[#0C757B] hover:text-[#470E92] transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-purple-500/20 p-1 text-sm sm:text-base">
-                                        ✏️
+                                            class="text-[#0C757B] hover:text-[#470E92] transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-purple-500/20 p-1 text-sm sm:text-base bg-gray-600 hover:bg-gray-700 rounded px-2 py-1">
+                                        Editar
                                     </button>
                                     <button onclick="financeController.deleteTransaction(${transaction.id})" 
-                                            class="text-red-400 hover:text-red-300 transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-red-500/20 p-1 text-sm sm:text-base">
-                                        🗑️
+                                            class="text-red-400 hover:text-red-300 transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-red-500/20 p-1 text-sm sm:text-base bg-gray-600 hover:bg-gray-700 rounded px-2 py-1">
+                                        Excluir
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <!-- Data para mobile -->
-                        <div class="sm:hidden mt-2 text-xs text-gray-400 ml-8">
+                        <div class="sm:hidden mt-2 text-xs text-gray-400">
                             ${this.formatDate(transaction.date)}
                         </div>
                     </div>
@@ -1794,21 +1798,60 @@
             applyTheme() {
                 const body = document.body;
                 const themeToggle = document.getElementById('themeToggle');
+                const themeToggleMobile = document.getElementById('themeToggleMobile');
+                const themeSlider = document.getElementById('themeSlider');
+                const themeSliderMobile = document.getElementById('themeSliderMobile');
                 
                 // Aplicar transição suave
                 body.style.transition = 'all 0.3s ease';
                 
                 if (this.isDarkMode) {
                     body.classList.remove('light-mode');
+                    
+                    // Desktop toggle
                     if (themeToggle) {
-                        themeToggle.textContent = '🌙';
+                        themeToggle.classList.remove('theme-toggle-active');
                         themeToggle.title = 'Alternar para modo claro';
+                    }
+                    if (themeSlider) {
+                        themeSlider.style.transform = 'translateX(0)';
+                        themeSlider.style.background = 'white';
+                        themeSlider.style.color = 'black';
+                    }
+                    
+                    // Mobile toggle
+                    if (themeToggleMobile) {
+                        themeToggleMobile.classList.remove('theme-toggle-active-mobile');
+                        themeToggleMobile.title = 'Alternar para modo claro';
+                    }
+                    if (themeSliderMobile) {
+                        themeSliderMobile.style.transform = 'translateX(0)';
+                        themeSliderMobile.style.background = 'white';
+                        themeSliderMobile.style.color = 'black';
                     }
                 } else {
                     body.classList.add('light-mode');
+                    
+                    // Desktop toggle
                     if (themeToggle) {
-                        themeToggle.textContent = '☀️';
+                        themeToggle.classList.add('theme-toggle-active');
                         themeToggle.title = 'Alternar para modo escuro';
+                    }
+                    if (themeSlider) {
+                        themeSlider.style.transform = 'translateX(32px)';
+                        themeSlider.style.background = '#f59e0b';
+                        themeSlider.style.color = 'white';
+                    }
+                    
+                    // Mobile toggle
+                    if (themeToggleMobile) {
+                        themeToggleMobile.classList.add('theme-toggle-active-mobile');
+                        themeToggleMobile.title = 'Alternar para modo escuro';
+                    }
+                    if (themeSliderMobile) {
+                        themeSliderMobile.style.transform = 'translateX(24px)';
+                        themeSliderMobile.style.background = '#f59e0b';
+                        themeSliderMobile.style.color = 'white';
                     }
                 }
                 
@@ -2286,5 +2329,5 @@ ORDER BY ordinal_position;`;
     </script>
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'975051be4033f23f',t:'MTc1NjE3OTc0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9758b2c21457f1c1',t:'MTc1NjI2NzYwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
